@@ -12,6 +12,7 @@ connectDB();
 const app = express();
 
 
+
 // CORS
 /* ------------------ MIDDLEWARE ------------------ */
 
@@ -40,6 +41,7 @@ app.use(
 
 // BODY PARSER
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // STATIC UPLOADS
