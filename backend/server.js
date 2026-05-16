@@ -13,13 +13,30 @@ const app = express();
 
 
 // CORS
+/* ------------------ MIDDLEWARE ------------------ */
+
+// CORS
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",")
+  : [];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: function (origin, callback) {
+      // Allow no-origin (Postman, curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error(`CORS blocked: ${origin} not allowed`)
+      );
+    },
     credentials: true,
   })
 );
-
 
 // BODY PARSER
 app.use(express.json());
